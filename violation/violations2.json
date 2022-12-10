@@ -1,0 +1,16 @@
+[
+  {
+    "date_time": "2020-04-05 5:29:01",
+    "first_name": "PETR",
+    "last_name": "Ivanov",
+    "type": "CRASHES",
+    "fine_amount": 300.0
+  },
+  {
+    "date_time": "2020-04-05 5:29:01",
+    "first_name": "PETR",
+    "last_name": "Ivanov",
+    "type": "SPEEDING",
+    "fine_amount": 200.0
+  }
+]
