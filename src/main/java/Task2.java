@@ -16,11 +16,11 @@ import java.util.ArrayList;
 public class Task2 {
     public static void main(String[] args) throws InstantiationException, IllegalAccessException {
 
-        Path writeFilePath = Paths.get("C:\\Users\\Дима\\Downloads\\task3\\task2.properties");
+        Path writeFilePath = Paths.get("task3\\task2.properties");
         Class<SomeClass> mClassObject = SomeClass.class;
 
         try {
-            SomeClass<?> cls = loadFromProperties(mClassObject, writeFilePath);
+            SomeClass cls = loadFromProperties(mClassObject, writeFilePath);
         } catch (IOException | ClassNotFoundException | NoSuchMethodException e) {
             e.printStackTrace();
         }
@@ -29,9 +29,10 @@ public class Task2 {
 
     public static <T> T loadFromProperties(Class<T> cls, Path propertiesPath) throws IOException,
             ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-           T c = cls.newInstance();
 
+        T c = cls.newInstance();
         try (FileReader reader = new FileReader(String.valueOf(propertiesPath))) {
+
             BufferedReader read = new BufferedReader(reader);
             ArrayList<String> get = new ArrayList<>();
             String line = read.readLine();

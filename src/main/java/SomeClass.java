@@ -2,7 +2,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.time.Instant;
 
-public class SomeClass<T> {
+public class SomeClass {
 
     public String stringProperty;
 

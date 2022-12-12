@@ -23,7 +23,7 @@ public class Task1 {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
 
-        File folder = new File("C:\\Users\\Дима\\Downloads\\task3\\violation");
+        File folder = new File("task3\\violation");
         File[] listOfFiles = folder.listFiles();
         Task1 task1 = new Task1();
         assert listOfFiles != null;
@@ -46,7 +46,7 @@ public class Task1 {
     private Map<String, Double> readFile(File newFile) {
         JSONParser jsonParser = new JSONParser();
         try {
-            Object obj = jsonParser.parse(new FileReader("C:\\Users\\Дима\\Downloads\\task3\\violation\\" + newFile));
+            Object obj = jsonParser.parse(new FileReader("task3\\violation\\" + newFile));
             JSONArray jsonArray = (JSONArray) obj;
             for (Object o : jsonArray) {
                 JSONObject jsonObject = (JSONObject) o;
