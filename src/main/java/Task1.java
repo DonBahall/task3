@@ -28,13 +28,16 @@ public class Task1 {
         Task1 task1 = new Task1();
         assert listOfFiles != null;
         ExecutorService service = Executors.newFixedThreadPool(2);
+
+
         for (int i = 0; i < listOfFiles.length; i++) {
             int finalI = i;
             CompletableFuture<Future<Map<String, Double>>> future =
                     CompletableFuture.supplyAsync(() ->
+
                             service.submit(() -> task1.readFile(new File(listOfFiles[finalI].getName()))), service);
 
-            System.out.println(future.get().get().entrySet());
+            System.out.println(future.get().get().entrySet() + Thread.currentThread().getName());
         }
         service.shutdown();
         task1.createXml();

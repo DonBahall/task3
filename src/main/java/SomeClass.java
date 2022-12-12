@@ -3,13 +3,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.time.Instant;
 
 public class SomeClass<T> {
-    @Property(name = "stringProperty")
+
     public String stringProperty;
 
     @Property(name = "numberProperty")
     public int myNumber;
 
-    @Property(name = "timeProperty", format = "dd.MM.yyyy tt:mm")
+    @Property(name = "timeProperty", format = "dd.MM.yyyy HH:mm")
     public Instant timeProperty;
 
     @Retention(RetentionPolicy.RUNTIME)
