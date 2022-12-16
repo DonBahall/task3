@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 
 public class Task2 {
+
     public static void main(String[] args) throws InstantiationException, IllegalAccessException {
 
         Path writeFilePath = Paths.get("src/main/resources/task2.properties");
@@ -28,9 +29,15 @@ public class Task2 {
 
     }
 
+    /**
+     * Method initialise variables with data given in the properties file
+     *
+     * @param cls class to initialise
+     * @param propertiesPath properties file
+     * @return Class newInstance()
+     */
     public static <T> T loadFromProperties(Class<T> cls, Path propertiesPath) throws IOException,
             ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-
         T c = cls.newInstance();
         try (FileReader reader = new FileReader(String.valueOf(propertiesPath))) {
 

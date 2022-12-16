@@ -3,6 +3,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
@@ -26,31 +27,53 @@ public class Task1 {
 
     Map<String, Double> map = new HashMap<>();
 
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
-
-        File folder = new File("src/main/resources/violation");
-        File[] listOfFiles = folder.listFiles();
+    public static void main(String[] args) {
         Task1 task1 = new Task1();
+        task1.startingThreads();
+    }
 
+    /**
+     * Method finding the folder and get all files in it
+     * @return files in folders
+     */
+    private File[] openFile() {
+        File folder = new File("src/main/resources/violation");
+        return folder.listFiles();
+    }
+
+    /**
+     * Method which starting threads
+     */
+    private void startingThreads() {
         ExecutorService service = Executors.newFixedThreadPool(2);
-        if (listOfFiles != null) {
-            for (int i = 0; i < listOfFiles.length; i++) {
+        if (openFile() != null) {
+            for (int i = 0; i < openFile().length; i++) {
                 int finalI = i;
                 CompletableFuture<Future<Map<String, Double>>> future =
                         CompletableFuture.supplyAsync(() ->
-                                service.submit(() -> task1.readFile(new File(listOfFiles[finalI].getName()))), service);
-                System.out.println(future.get().get().entrySet());
+                                service.submit(() -> readFile(new File(openFile()[finalI].getName()))), service);
+                try {
+                    System.out.println(future.get().get().entrySet());
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
             }
             service.shutdown();
-            task1.createXml();
+            createXml();
         }
     }
 
+    /**
+     * Method parsing the json file and write data in map
+     *
+     * @param newFile file to read
+     * @return map with data
+     */
     private Map<String, Double> readFile(File newFile) {
 
         JSONParser jsonParser = new JSONParser();
         try {
-            Object obj = jsonParser.parse(new FileReader("src/main/resources/violation/"+ newFile));
+            Object obj = jsonParser.parse(new FileReader("src/main/resources/violation/" + newFile));
             JSONArray jsonArray = (JSONArray) obj;
             for (Object o : jsonArray) {
                 JSONObject jsonObject = (JSONObject) o;
@@ -68,6 +91,9 @@ public class Task1 {
         return map;
     }
 
+    /**
+     * Creating Xml document using global map with data
+     */
     private void createXml() {
         sortMap();
         try {
@@ -94,6 +120,9 @@ public class Task1 {
         }
     }
 
+    /**
+     * Sorting map
+     */
     private void sortMap() {
         map = map.entrySet().stream().sorted(Collections.reverseOrder(Map.Entry.comparingByValue())).collect(Collectors.toMap(
                 Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
