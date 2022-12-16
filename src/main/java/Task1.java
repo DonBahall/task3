@@ -3,7 +3,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
@@ -12,9 +11,15 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.FileReader;
-import java.util.*;
-
-import java.util.concurrent.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 public class Task1 {
@@ -23,30 +28,29 @@ public class Task1 {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
 
-        File folder = new File("task3\\violation");
+        File folder = new File("src/main/resources/violation");
         File[] listOfFiles = folder.listFiles();
         Task1 task1 = new Task1();
-        assert listOfFiles != null;
+
         ExecutorService service = Executors.newFixedThreadPool(2);
-
-
-        for (int i = 0; i < listOfFiles.length; i++) {
-            int finalI = i;
-            CompletableFuture<Future<Map<String, Double>>> future =
-                    CompletableFuture.supplyAsync(() ->
-
-                            service.submit(() -> task1.readFile(new File(listOfFiles[finalI].getName()))), service);
-
-            System.out.println(future.get().get().entrySet() + Thread.currentThread().getName());
+        if (listOfFiles != null) {
+            for (int i = 0; i < listOfFiles.length; i++) {
+                int finalI = i;
+                CompletableFuture<Future<Map<String, Double>>> future =
+                        CompletableFuture.supplyAsync(() ->
+                                service.submit(() -> task1.readFile(new File(listOfFiles[finalI].getName()))), service);
+                System.out.println(future.get().get().entrySet());
+            }
+            service.shutdown();
+            task1.createXml();
         }
-        service.shutdown();
-        task1.createXml();
     }
 
     private Map<String, Double> readFile(File newFile) {
+
         JSONParser jsonParser = new JSONParser();
         try {
-            Object obj = jsonParser.parse(new FileReader("task3\\violation\\" + newFile));
+            Object obj = jsonParser.parse(new FileReader("src/main/resources/violation/"+ newFile));
             JSONArray jsonArray = (JSONArray) obj;
             for (Object o : jsonArray) {
                 JSONObject jsonObject = (JSONObject) o;

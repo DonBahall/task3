@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 public class Task2 {
     public static void main(String[] args) throws InstantiationException, IllegalAccessException {
 
-        Path writeFilePath = Paths.get("task3\\task2.properties");
+        Path writeFilePath = Paths.get("src/main/resources/task2.properties");
         Class<SomeClass> mClassObject = SomeClass.class;
 
         try {
@@ -92,8 +93,8 @@ public class Task2 {
                 }
 
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            System.out.println("File is not found");
         }
         return c;
     }
